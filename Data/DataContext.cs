@@ -8,7 +8,7 @@ using System.Web;
 
 namespace Data
 {
-    public class DataContext
+    public class DataContext : DbContext
     {
         public DataContext() : base("DefaultConnection") { }
         public DbSet<Author> Authors { get; set; }
