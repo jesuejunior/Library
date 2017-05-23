@@ -7,9 +7,10 @@ namespace Business.Domain
 {
     public class Book
     {
-        public int BookId { get; set; }
+        public int Id { get; set; }
         public string Isbn { get; set; }
         public string Title { get; set; }
+        public int Year { get; set; }
         public virtual ICollection<Author> Authors { get; set; }
     }
 }

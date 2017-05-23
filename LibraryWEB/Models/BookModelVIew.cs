@@ -8,15 +8,17 @@ namespace LibraryWEB.Models
 {
     public class BookModelView
     {
-        public int BookId { get; set; }
+        public int Id { get; set; }
         public string Isbn { get; set; }
         public string Title { get; set; }
+        public int Year { get; set; }
         public virtual ICollection<Author> Authors { get; set; }
         public BookModelView fromModel(Book model)
         {
-            this.BookId = model.BookId;
+            this.Id = model.Id;
             this.Isbn = model.Isbn;
             this.Title = model.Title;
+            this.Year = model.Year;
             this.Authors = model.Authors;
             return this;
 
