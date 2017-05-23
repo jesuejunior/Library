@@ -8,13 +8,13 @@ namespace LibraryWEB.Models
 {
     public class AuthorModelView
     {
-        public int AuthorId { get; set; }
+        public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public virtual ICollection<Book> Books { get; set; }
         public AuthorModelView fromModel(Author model)
         {
-            this.AuthorId = model.AuthorId;
+            this.Id = model.Id;
             this.FirstName = model.FirstName;
             this.LastName = model.LastName;
             this.Books = model.Books;

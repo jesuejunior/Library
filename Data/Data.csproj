@@ -83,7 +83,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookEntity.cs" />
     <Compile Include="DataContext.cs" />
+    <Compile Include="Migrations\201705230127014_Initial.cs" />
+    <Compile Include="Migrations\201705230127014_Initial.Designer.cs">
+      <DependentUpon>201705230127014_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +97,11 @@
       <Project>{18E05EC0-C595-4425-A33F-04E6888F2B3A}</Project>
       <Name>Business</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201705230127014_Initial.resx">
+      <DependentUpon>201705230127014_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
