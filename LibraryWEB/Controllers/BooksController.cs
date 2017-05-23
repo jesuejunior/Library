@@ -77,7 +77,7 @@ namespace LibraryWEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                service.Update(1,"1233", "abc", 2016);
+                service.Update(book.Id,book.Isbn, book.Title, book.Year);
                 return RedirectToAction("Index");
             }
             return View(book);
@@ -90,7 +90,7 @@ namespace LibraryWEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Book book = service.Delete(id);
+            Book book = service.Get(id);
             if (book == null)
             {
                 return HttpNotFound();
@@ -103,7 +103,7 @@ namespace LibraryWEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Book book = service.Delete(id);
+            service.Delete(id);
             return RedirectToAction("Index");
         }
 

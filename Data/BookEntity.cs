@@ -28,7 +28,7 @@ namespace Data
             Book book = db.Books.Find(id);
             db.Books.Remove(book);
             db.SaveChanges();
-            return book;
+            return new Book();
         }
 
         public Book Get(int? Id)
