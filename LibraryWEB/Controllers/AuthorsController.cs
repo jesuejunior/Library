@@ -13,12 +13,12 @@ namespace LibraryWEB.Controllers
 {
     public class AuthorsController : Controller
     {
-        private DataContext db = new DataContext();
+        private Service.AuthorService service = new Service.AuthorService(new Data.AuthorEntity());
 
         // GET: Authors
         public ActionResult Index()
         {
-            return View(db.Authors.ToList());
+            return View(service.GetAll());
         }
 
         // GET: Authors/Details/5
@@ -28,7 +28,7 @@ namespace LibraryWEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Author author = db.Authors.Find(id);
+            Author author = service.Get(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -51,8 +51,7 @@ namespace LibraryWEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Authors.Add(author);
-                db.SaveChanges();
+                service.Create(author.FirstName, author.LastName, author.Email, author.Birthday);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +65,7 @@ namespace LibraryWEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Author author = db.Authors.Find(id);
+            Author author = service.Get(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -83,8 +82,7 @@ namespace LibraryWEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(author).State = EntityState.Modified;
-                db.SaveChanges();
+                service.Update(author.Id, author.FirstName, author.LastName, author.Email, author.Birthday);
                 return RedirectToAction("Index");
             }
             return View(author);
@@ -97,7 +95,7 @@ namespace LibraryWEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Author author = db.Authors.Find(id);
+            Author author = service.Get(id);
             if (author == null)
             {
                 return HttpNotFound();
@@ -110,9 +108,7 @@ namespace LibraryWEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Author author = db.Authors.Find(id);
-            db.Authors.Remove(author);
-            db.SaveChanges();
+            service.Delete(id);
             return RedirectToAction("Index");
         }
 

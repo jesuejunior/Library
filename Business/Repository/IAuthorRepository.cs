@@ -8,6 +8,10 @@ namespace Business.Repository
 {
     public interface IAuthorRepository
     {
-        Author create(int Id, string FirstName, string LastName, string Email, string Birthday);
-    }
+        Author Create(string FirstName, string LastName, string Email, string Birthday);
+        Author Update(int Id, string FirstName, string LastName, string Email, string Birthday);
+        Author Get(int? Id);
+        Author Delete(int? Id);
+        List<Author> GetAll();
+    }   
 }
