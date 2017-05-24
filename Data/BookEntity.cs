@@ -44,7 +44,16 @@ namespace Data
 
         public Book Update(int Id, string Isbn, string Title, int Year)
         {
-            throw new NotImplementedException();
+            Book book = db.Books.Find(Id);
+            if (book != null)
+            {
+                book.Title = (Title == null) ? book.Title : Title;
+                book.Isbn = (Isbn == null) ? book.Isbn : Isbn;
+                book.Year = (Year == null) ? book.Year : Year;
+                db.SaveChanges();
+            }
+            
+            return book;
         }
     }
 }
