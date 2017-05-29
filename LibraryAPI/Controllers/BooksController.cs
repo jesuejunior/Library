@@ -15,19 +15,19 @@ namespace LibraryAPI.Controllers
 {
     public class BooksController : ApiController
     {
-        private DataContext db = new DataContext();
+        private Service.BookService service = new Service.BookService(new Data.BookEntity());
 
         // GET: api/Books
         public IQueryable<Book> GetBooks()
         {
-            return db.Books;
+            return service.GetAll().AsQueryable();
         }
 
         // GET: api/Books/5
         [ResponseType(typeof(Book))]
         public IHttpActionResult GetBook(int id)
         {
-            Book book = db.Books.Find(id);
+            Book book = service.Get(id);
             if (book == null)
             {
                 return NotFound();
@@ -50,23 +50,7 @@ namespace LibraryAPI.Controllers
                 return BadRequest();
             }
 
-            db.Entry(book).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            service.Update(book.Id, book.Isbn, book.Title, book.Year);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
@@ -76,12 +60,12 @@ namespace LibraryAPI.Controllers
         public IHttpActionResult PostBook(Book book)
         {
             if (!ModelState.IsValid)
+
             {
                 return BadRequest(ModelState);
             }
 
-            db.Books.Add(book);
-            db.SaveChanges();
+            service.Create(book.Isbn, book.Title, book.Year, book.Authors);
 
             return CreatedAtRoute("DefaultApi", new { id = book.Id }, book);
         }
@@ -90,14 +74,13 @@ namespace LibraryAPI.Controllers
         [ResponseType(typeof(Book))]
         public IHttpActionResult DeleteBook(int id)
         {
-            Book book = db.Books.Find(id);
+            Book book = service.Get(id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            db.Books.Remove(book);
-            db.SaveChanges();
+            service.Delete(id);
 
             return Ok(book);
         }
@@ -106,14 +89,14 @@ namespace LibraryAPI.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool BookExists(int id)
         {
-            return db.Books.Count(e => e.Id == id) > 0;
+            return service.Exist(id);
         }
     }
 }

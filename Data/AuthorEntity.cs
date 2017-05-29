@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Business.Domain;
+using System.Data.Entity.Infrastructure;
 
 namespace Data
 {
@@ -50,9 +51,30 @@ namespace Data
                 author.LastName = (LastName == null) ? author.LastName : LastName;
                 author.Email = (Email == null) ? author.Email : Email;
                 author.Birthday = (Birthday == null) ? author.Birthday : Birthday;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!this.Exist(Id))
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
             }
             return author;
+        }
+
+        public bool Exist(int? id)
+        {
+            return db.Authors.Count(e => e.Id == id) > 0;
         }
     }
 }

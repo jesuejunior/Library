@@ -22,9 +22,9 @@ namespace Service
 
         }
 
-        public Book Create(string Isbn, string Title, int Year)
+        public Book Create(string Isbn, string Title, int Year, ICollection<Author> Authors)
         {
-            return this.repository.Create(Isbn, Title, Year);
+            return this.repository.Create(Isbn, Title, Year, Authors);
         }
 
         public Book Get(int? id)
@@ -40,6 +40,11 @@ namespace Service
         public Book Update(int Id, string Isbn, string Title, int Year)
         {
             return this.repository.Update(Id, Isbn, Title, Year);
+        }
+
+        public bool Exist(int? id)
+        {
+            return this.repository.Exist(id);
         }
     }
 }

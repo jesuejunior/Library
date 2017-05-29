@@ -5,6 +5,8 @@ using System.Web;
 using Business.Domain;
 using Business.Repository;
 using Data;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 
 namespace Data
 {
@@ -12,12 +14,14 @@ namespace Data
     {
         private DataContext db = new DataContext();
 
-        public Book Create(string Isbn, string Title, int Year)
+        public Book Create(string Isbn, string Title, int Year, ICollection<Author> Authors)
         {
+            //Author author = db.Authors.Find(Authors);
             Book book = new Book();
             book.Isbn = Isbn;
             book.Title = Title;
             book.Year = Year;
+            book.Authors.SelectMany(Author => Authors); //= author;
             db.Books.Add(book);
             db.SaveChanges();
             return book;
@@ -50,10 +54,30 @@ namespace Data
                 book.Title = (Title == null) ? book.Title : Title;
                 book.Isbn = (Isbn == null) ? book.Isbn : Isbn;
                 book.Year = (Year == null) ? book.Year : Year;
-                db.SaveChanges();
+
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!this.Exist(Id))
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
             }
-            
             return book;
+        }
+
+        public bool Exist(int? id)
+        {
+           return db.Books.Count(e => e.Id == id) > 0;
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Business.Repository
         Author Get(int? Id);
         Author Delete(int? Id);
         List<Author> GetAll();
+        bool Exist(int? id);
     }   
 }

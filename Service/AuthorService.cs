@@ -39,5 +39,10 @@ namespace Service
         {
             return this.repository.Update(Id, FirstName, LastName, Email, Birthday);
         }
+
+        public bool Exist(int? id)
+        {
+            return this.repository.Exist(id);
+        }
     }
 }

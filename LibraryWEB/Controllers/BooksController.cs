@@ -45,11 +45,11 @@ namespace LibraryWEB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Isbn,Title,Year")] Book book)
+        public ActionResult Create([Bind(Include = "Id,Isbn,Title,Year,Authors")] Book book)
         {
             if (ModelState.IsValid)
             {
-                service.Create(book.Isbn, book.Title,book.Year);
+                service.Create(book.Isbn, book.Title,book.Year, book.Authors);
                 return RedirectToAction("Index");
             }
 
