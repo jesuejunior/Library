@@ -5,22 +5,32 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Business.Domain;
 using Data;
+using Service;
+using Business.Repository;
 
 namespace LibraryAPI.Controllers
 {
     public class BooksController : ApiController
     {
-        private Service.BookService service = new Service.BookService(new Data.BookEntity());
+        private readonly IBookRepository service;
+        //private Service.BookService service = new Service.BookService(new Data.BookEntity());
+        //private BookService service;
+
+        //public BooksController() :
+        //    this(new BookService(new Data.BookEntity()))
+        //{ }
+        public BooksController(IBookRepository _service) {
+            service = _service;
+        }
 
         // GET: api/Books
-        public IQueryable<Book> GetBooks()
+        public List<Book> GetBooks()
         {
-            return service.GetAll().AsQueryable();
+            return service.GetAll();
         }
 
         // GET: api/Books/5
@@ -52,7 +62,7 @@ namespace LibraryAPI.Controllers
 
             service.Update(book.Id, book.Isbn, book.Title, book.Year);
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(book);
         }
 
         // POST: api/Books
@@ -82,7 +92,7 @@ namespace LibraryAPI.Controllers
 
             service.Delete(id);
 
-            return Ok(book);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
@@ -94,7 +104,7 @@ namespace LibraryAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool BookExists(int id)
+        public bool BookExists(int id)
         {
             return service.Exist(id);
         }

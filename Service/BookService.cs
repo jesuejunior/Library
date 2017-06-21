@@ -11,7 +11,6 @@ namespace Service
     {
         private IBookRepository repository;
 
-
         public BookService(IBookRepository repository)
         {
             this.repository = repository;

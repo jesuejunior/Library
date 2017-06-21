@@ -53,7 +53,7 @@ namespace Data
             {
                 book.Title = (Title == null) ? book.Title : Title;
                 book.Isbn = (Isbn == null) ? book.Isbn : Isbn;
-                book.Year = (Year == null) ? book.Year : Year;
+                book.Year = Year;
 
                 try
                 {

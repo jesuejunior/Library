@@ -10,17 +10,23 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using Business.Domain;
 using Data;
+using Business.Repository;
 
 namespace LibraryAPI.Controllers
 {
     public class AuthorsController : ApiController
     {
-        private Service.AuthorService service = new Service.AuthorService(new Data.AuthorEntity());
+        private readonly IAuthorRepository service;
+        //private Service.AuthorService service = new Service.AuthorService(new Data.AuthorEntity());
+        public AuthorsController(IAuthorRepository _service)
+        {
+            service = _service;
+        }
 
         // GET: api/Authors
-        public IQueryable<Author> GetAuthors()
+        public List<Author> GetAuthors()
         {
-            return service.GetAll().AsQueryable();
+            return service.GetAll();
         }
 
         // GET: api/Authors/5
@@ -54,7 +60,7 @@ namespace LibraryAPI.Controllers
 
             
 
-            return StatusCode(HttpStatusCode.NoContent);
+            return Ok(author);
         }
 
         // POST: api/Authors
@@ -82,7 +88,7 @@ namespace LibraryAPI.Controllers
             }
 
             service.Delete(id);
-            return Ok(author);
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)
@@ -94,7 +100,7 @@ namespace LibraryAPI.Controllers
             base.Dispose(disposing);
         }
 
-        private bool AuthorExists(int id)
+        public bool AuthorExists(int id)
         {
             return service.Exist(id);
         }
